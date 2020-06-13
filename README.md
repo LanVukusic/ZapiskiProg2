@@ -55,7 +55,7 @@ int main () {
   Value of *ip variable: 20
 
 
-__Pointer lahko tudi povečaš z recimo _ptr++_; Zabavno je, kr ti "visokonivjoski C" nardi u ozadju vs garbage iz ARS-a in ti naslov dejansko inkrementira za 4, tako da kaže na nov ukaz. Hvala C.  
+__Pointer lahko tudi povečaš z recimo _ptr++_; Zabavno je, kr ti "visokonivjoski C" nardi u ozadju vs garbage iz ARS-a in ti naslov dejansko inkrementira za 4 (ni zmer 4... ja ok whatever), tako da kaže na nov ukaz. Hvala C.  
 Uporabna vrednost tega je recimo to da lahko tko na izi loopaš čez tabele:  
 Primer:__  
 ```c
