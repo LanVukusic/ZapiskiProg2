@@ -11,7 +11,7 @@ int main(){
 > 0x55810e567018
 
 # POINTERJI *
-__Tole ( * ) ti da pointer do neke vrednosti. To nam omogoča da delamo z njihovimi naslovi in ne z vrednostjo direkt. To je kul kr lahko potem to vrednostspreminjaš al pa jo pointaš drugam.  
+__Tole ( * ) ti da pointer do neke vrednosti. To nam omogoča da delamo z njihovimi naslovi in ne z vrednostjo direkt. To je kul kr lahko potem to vrednosts preminjaš al pa jo pointaš drugam.  
 Primeri:__  
 
 Tko dekleriraš pointerje:  
@@ -22,7 +22,6 @@ float  *fp;    /* pointer to a float */
 char   *ch     /* pointer to a character */
 
 if(ip)     /* succeeds if p is not null */
-if(ip)    /* succeeds if p is null */
 ```
 
 Lep primer uporabe:
@@ -71,7 +70,7 @@ int main () {
    ptr = var;  // damo v pointer lokacijo tabele
    i = 0;
 	
-   while ( ptr <= &var[MAX - 1] ) {  // ponterje lahko primerjamo z klasicnimi operatorji
+   while ( ptr <= &var[MAX - 1] ) {  // ponterje lahko primerjamo z klasičnimi operatorji
 
       printf("Address of var[%d] = %x\n", i, ptr );
       printf("Value of var[%d] = %d\n", i, *ptr );
@@ -130,19 +129,48 @@ Primer:__
 
 
 ```c
- int A, B; 
- B = 5; 
- A = twoValues(B); 
+ int A, B;
+ B = 5;
+ A = twoValues(&B);
 
  int twoValues(int *x){  // funkcija išče reference
-  int y = x * 2;
-  x = x + 10;  //lahko mutiramo tud podan element
+  int y = *x * 2;
+  *x = x + 10;  //lahko mutiramo tud podan element
   return y; 
  }
 
  printf("A:%d, B:%d",A,B)
 ```
 >  A:10  B:15  
+
+Če je to rahlo confusing je tle še en primer.  
+```c
+// nek test cja
+#include <stdio.h>
+
+//int racunaj(int* ,int*);
+
+int racunaj(int* i, int* j){
+    int res = *i + *j;
+    *i = 0;
+    *j = res;
+    return res;
+}
+
+int main(){
+    int value = 3000;
+    int value2= 1000;
+
+    int *ptri = &value;
+
+    //printf("value: %d, ptr: %d, ptr*: %d", value, *ptr, **ptrr);
+    int a = racunaj (ptri, &value2);
+
+    printf("value i: %d, value j: %d\n", value, value2);
+    return (0);
+}
+```
+> value i: 0, value j: 4000
 
 A drži vrednost ki jo zračuna funkcija  
 B pa dobi novo vrednost, ki jo je funkcija spremenila
@@ -240,7 +268,22 @@ int main() {
     distances d1, d2;
 }
 ```
-Lahko jih nestaš obviously...  
+Lahko jih nestaš obviously...
+
+__PAZI!!!__ Če naprimer definiraš drevo, ka ma neke node, moreš referencirat po  "struct ime". Primer:  
+__PAZI SPET__ Če je node list drevesa, potem njegove left in right pointerje setaj na NULL;  
+Čene dobiš tak garbage:  
+> 10  
+ 1  
+ 29590344  
+ Segmentation fault (core dumped)
+```c
+typedef struct binNode {
+    int value;
+    struct binNode *ptrLeft;  // tole lepo dela
+    node1 *ptrRight;  // tole ne dela tud ce smo rekli da je isto
+} node1;
+```
 
 Tuki pridemo do naslednjega bolečega spoznanja...in sicer __malloc__ in __sizeof__.  
 Primer uporabne na structih:  
@@ -283,7 +326,15 @@ int main(){
    return 0;
 }
 ```
-__malloc__ ti memory alocata (bruh) neko velikost na disku  
+__malloc()__ ti memory alocata (bruh) neko velikost na disku  
+__calloc()__ ti memory alocata plus seta ta memory block na 0. calloc(a, b); kjer je __a__ število alociranih blokov, __b__ pa velikost bloka.  
+
+
+Pri obeh  lahko dostopaš do pointerjev kokr array.  
+```c
+arr = calloc (10, sizeof(float));
+printf(arr[3]);
+```  
 __sizeof()__ ti vrne kok je ena stvar velika. Dostkrat rabiš v uporabi z malloc da veš kolko prostora rabiš.
 Ta vrstica je usefull:  
 
@@ -337,7 +388,7 @@ tle so usi MODI:  https://www.programiz.com/c-programming/c-file-input-output
 
 ``` c
 FILE *fptr;
-fptr = open("E:\\cprogram\\newprogram.txt","r");
+fptr = fopen("E:\\cprogram\\newprogram.txt","r");
 fprintf(fptr,"%d",12);
 fclose(fptr)
 ```
@@ -383,7 +434,9 @@ int main (int argc, char *args[])
     char *iname = "/neki/disk/fajl.txt";
 
     FILE *ifile;
-    if ((ifile = fopen (iname, "r")) == NULL) exit (2);
+    if ((ifile = fopen (iname, "r")) == NULL){
+        exit (2);
+    }
 
     // tle sta dve opciji
 
@@ -395,11 +448,14 @@ int main (int argc, char *args[])
     }
     */
 
+   //fscanf naceloma returna stevilo ustrezno prebranih bytov.
+   //razn ce prides to konc fajla, takrat returna EOF
     char c;
     while (fscanf (ifile, "%c", &c) != EOF) {
-        printf ("prebran znak '%c' [%d]\n", c, c);
+        printf ("prebran znak '%c'\n", c);
     }
 
+    // napišeš sam "fclose(ifile)", pa roka...nerabiš usega okrog
     if (fclose (ifile) != 0) exit (4);
 
     return 0;
