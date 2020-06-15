@@ -1,3 +1,14 @@
+# GOOD STUFF
+### To je pač stuff ka sm ga rabu pr delanju nalog in sm ga mogu pogooglat... ja getchar nism vedu...sue me.
+
+ - tolower(char) ti vrne stvari z lowercase  
+ - toupper(char) ti vrne stvari z uppercasom  
+ - getchar() bere naslednji thing iz stdio in ga returna  
+ - scanf("%d", *float) boljši getchar; Bere iz vhoda formatan input, ter zapiše na addres drugega argumenta.  
+ - putchar(char) napiše ta bogi osamljen char  
+ - printf("formatan string %d") putchar na steroidih.  
+
+
 # operator &  
 __Fora tega "end"-a je da ti da memory naslov stvari. recimo:__ 
 ```c
@@ -211,7 +222,7 @@ printf("Greeting message: %s\n", greeting );
 ```
 >Greeting message: Hello
 
-Če so stringi Null terminated ('\0' nakonc), lahok na jih zmetamo en kup funkcij kot so:  
+Če so stringi Null terminated ('\0' nakonc), lahko na jih zmetamo en kup funkcij kot so:  
 |Funkcija|Opis|
 |---|---|
 |strcpy(s1, s2);|Kopira S2 v S1|
@@ -286,6 +297,7 @@ typedef struct binNode {
 ```
 
 Tuki pridemo do naslednjega bolečega spoznanja...in sicer __malloc__ in __sizeof__.  
+__PAZI__ includat moreš _"<stdlib.h>"_  
 Primer uporabne na structih:  
 
 ```c
@@ -330,7 +342,7 @@ __malloc()__ ti memory alocata (bruh) neko velikost na disku
 __calloc()__ ti memory alocata plus seta ta memory block na 0. calloc(a, b); kjer je __a__ število alociranih blokov, __b__ pa velikost bloka.  
 
 
-Pri obeh  lahko dostopaš do pointerjev kokr array.  
+Pri obeh  lah dostopaš do pointerjev kokr array.  
 ```c
 arr = calloc (10, sizeof(float));
 printf(arr[3]);
@@ -385,6 +397,8 @@ Tle pač ni nč takga sepcial. razna drevesa in take itak veš kako delajo in po
 
 Ideja je dost podobna kokr u pythonu. Nardiš nek file object, in mu poveš kaj gleda pa nek MODE mu da. alora read/write/readbytes/append ...  
 tle so usi MODI:  https://www.programiz.com/c-programming/c-file-input-output  
+
+To copypasti in ti bo zapisalo v fajl 👌👌
 
 ``` c
 FILE *fptr;
