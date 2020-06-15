@@ -8,6 +8,8 @@
  - putchar(char) napiše ta bogi osamljen char  
  - printf("formatan string %d") putchar na steroidih.  
 
+ - __ZMERI RES ZMERI USE FAKING INITI Z 0 AL PA NULL...KR CENE BOS DO 01:18 DEBUGAU FAKING 2 VRSTICI__
+
 
 # operator &  
 __Fora tega "end"-a je da ti da memory naslov stvari. recimo:__ 
