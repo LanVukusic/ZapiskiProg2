@@ -12,7 +12,9 @@
 
 
 # operator &  
-__Fora tega "end"-a je da ti da memory naslov stvari. recimo:__ 
+
+__Fora tega "end"-a je da ti da memory naslov stvari. recimo:__  
+
 ```c
 #include <stdio.h>
 
@@ -21,23 +23,37 @@ int main(){
     printf("%18p",&i);  // sprinti naslov od i -ja
 }
 ```
+
 > 0x55810e567018
 
 # POINTERJI *
 __Tole ( * ) ti da pointer do neke vrednosti. To nam omogoča da delamo z njihovimi naslovi in ne z vrednostjo direkt. To je kul kr lahko potem to vrednosts preminjaš al pa jo pointaš drugam.  
-Primeri:__  
 
-Tko dekleriraš pointerje:  
+Ideja za tem je taka. tole zvezdico __(*)__ mej u glavi kokr _"vrednost na naslovu"_.  
+
+Nardimo primer za lazje razumet ... Najprej nardimo neko int vrednost in pointer ki ne kaze nikamor in ma random vrednost.  
+
 ```c
-int    *ip = NULL;;    /* dobro je da ih initaš z null */
-double *dp;    /* pointer to a double */
-float  *fp;    /* pointer to a float */
-char   *ch     /* pointer to a character */
+int stevilo = 420;
+int *ptr;
+```
 
-if(ip)     /* succeeds if p is not null */
+Potem moremo povedat kam nej ta pointer kaže. Sepravi na kater __NASLOV__ ne na katero vrednost. (nas zanima samo addres od "stevilo")
+
+```c
+ptr = &stevilo;  // &nekaj vrne naslov od nekaj
+```
+
+Pointer zdej kaže na naslov na katerem se nahaja število.  
+Če želimo iz pointerja dobit vrednost, uporabljamo tist "vrednost na naslovu" od zgori:  
+
+```c
+int lol = *ptr;  // lol je "vrednost na naslovu" ptr
+*ptr = 17;  // "vrednost na naslovu" ptr je 17
 ```
 
 Lep primer uporabe:
+
 ```c
 #include <stdio.h>
 
@@ -46,7 +62,6 @@ int main () {
    int  var = 20;   /* actual variable declaration */
    int  *ip;        /* pointer variable declaration */
 
-   
    ip = &var;  /* store address of var in pointer variable*/
 
    /* NASLOV o vrednosti kot stevilka */
@@ -61,6 +76,7 @@ int main () {
    return 0;
 }
 ```
+
  vrne :  
 > Address of var variable: bffd8b3c  
   Address stored in ip variable: bffd8b3c  
@@ -97,11 +113,22 @@ int main () {
 }
 
 ```
+
 > Address of var[0] = bf882b30  
  Value of var[0] = 10  
  Address of var[1] = bf882b34  
  Value of var[1] = 100
 
+ Tuki je pomembno da maš u glavi tisto __* = vrednost na naslovu__  
+ Kr potem lahko delaš neki u tem smislu:  
+
+ ```c
+ // nadaljevanje code - blocka od zgori
+ int lol = *(ptr + 4);
+ // vrednost na naslovu: ptr (kamor kaze pointer) + 4
+ // AKA vrednost na ptr + 4 zaporednem naslovu
+ // AKA ptr[4]
+ ```
 
 __Seveda nam nihče ne preprečuje da se nebi malo pozabavali in nardili pointer fuckfest.  
 Primer:__  
@@ -213,6 +240,50 @@ int c[2][3] = {1, 3, 0, -1, 5, 9};
 
 float x[3][4];
 ```
+
+Dost bl usefull je, da namesto da nardiš tabelo, nardiš samo pointer in alociraš N placa. Ta primer mi je dost bl prou pršu  
+Primer:  
+```c
+# include <stdio.h>
+# include <stdlib.h>
+
+int main(){
+    // preberemo kolk nizov bomo vpisal
+    int len = 0;
+    scanf("%i ",&len);
+
+    // alociramo tolk placa v spominu da lahk shranmo use to notr
+    char *str1 = calloc(len,  sizeof(char));
+
+    // zaloopamo tolkrat in beremo naše črke
+    for (int i = 0; i < len; i++){
+        // pointer zamikamo za en naslov naprej, ter na to mesto pišemo vrednost
+        *(str1 + i) = getchar();
+    }
+
+    printf("\nVALS: ");
+
+    // če VEŠ doužino
+    for (int i = 0; i < len; i++){
+        putchar(*(str1 + i));
+    }
+
+    // če NEVEŠ doužine
+    int count = 0;
+    // Basically beremo in potem pogledamo če smo že pršli do ničelnega elementa
+    // problem je samo da mamo težko "0" v tej tabeli
+    do{
+       putchar(*(str1 + count));
+       count++;
+    } while (*(str1 + count) != 0);
+    
+
+    // čeprou nismo definiral "klasične" tabele lahko tko dostopaš do elementou
+    char lol = str1[2];
+} 
+
+```
+
 
 Ker je C zelo gay, predstavimo _string_ e z tabelo 🙉🙊
 ```c
@@ -440,6 +511,20 @@ int main (int argc, char *args[])
  Branje vrstic:  
  _EOF (end of file) je in built char ka lahk z njim primerjas kdaj si konc_
 
+ To copypasti in ti bo bralo 👌👌
+
+``` c
+FILE *fptr;
+fptr = fopen("E:\\cprogram\\newprogram.txt","r");
+char c;
+while (fscanf (fptr, "%c", &c) != EOF) {
+    printf ("prebran znak '%c'\n", c);
+}
+fclose(fptr)
+```
+
+Tle je se doug primer  
+
  ```c
  #include <stdio.h>
 #include <stdlib.h>
@@ -460,12 +545,11 @@ int main (int argc, char *args[])
     int data;
     while ((data = fgetc (ifile)) != EOF) {
         printf ("prebran znak '%c' [%d]\n", data, data);
-        fputc (data, ofile);
     }
     */
 
-   //fscanf naceloma returna stevilo ustrezno prebranih bytov.
-   //razn ce prides to konc fajla, takrat returna EOF
+   // fscanf naceloma returna stevilo ustrezno prebranih bytov.
+   // razn ce prides to konc fajla, takrat returna EOF
     char c;
     while (fscanf (ifile, "%c", &c) != EOF) {
         printf ("prebran znak '%c'\n", c);
