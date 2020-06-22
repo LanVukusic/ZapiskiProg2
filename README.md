@@ -293,9 +293,37 @@ char greeting[6] = {'H', 'e', 'l', 'l', 'o', '\0'};
 // char arraye lahko normalno printamo in nam izpiše "Hello"
 printf("Greeting message: %s\n", greeting );
 ```
+```c
+int main(){
+    printf("Hello World\n");
+    
+    char** arr = malloc(3 * sizeof(char*));
+    
+    for(int i = 0; i < 3; i++){
+        arr[i] = malloc( 10 * sizeof(char));
+        int j = 0;
+        char c;
+        do{
+            c = getchar();
+            arr[i][j] = c;
+            j++;
+            
+        }while(c != '\n');
+    }
+    
+    printf("%s",arr[0]);
+    printf("%s",arr[1]);
+    printf("%s",arr[2]);
+    
+
+    return 0;
+}
+
+```
+
 >Greeting message: Hello
 
-Če so stringi Null terminated ('\0' nakonc), lahko na jih zmetamo en kup funkcij kot so:  
+Če so Null terminated ('\0' nakonc), lahko na jih zmetamo en kup funkcij kot so:  
 |Funkcija|Opis|
 |---|---|
 |strcpy(s1, s2);|Kopira S2 v S1|
